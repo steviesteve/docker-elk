@@ -5,8 +5,9 @@ services:
   elasticsearch:
     build: elasticsearch/
     ports:
-      - "9200:9200"
-      - "9300:9300"
+      # map to random host ports instead of static ports, eg. 32000:9200
+      - "9200"
+      - "9300"
     environment:
       ES_JAVA_OPTS: "-Xms512m -Xmx512m"
       # disable X-Pack
@@ -16,8 +17,10 @@ services:
       xpack.monitoring.enabled: "false"
       xpack.graph.enabled: "false"
       xpack.watcher.enabled: "false"
+      discovery.type: zen
+      discovery.zen.ping.unicast.hosts: elasticsearch
     security_opt:
-      - seccomp:unconfined 
+      - seccomp:unconfined
     networks:
       - elk
 
